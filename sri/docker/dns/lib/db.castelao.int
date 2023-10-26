@@ -1,0 +1,24 @@
+
+$TTL 38400	; 10 hours 40 minutes
+@		IN SOA	ns.castelao.int. mario.castelao.int. (
+				10000002   ; serial
+				10800      ; refresh (3 hours)
+				3600       ; retry (1 hour)
+				604800     ; expire (1 week)
+				38400      ; minimum (10 hours 40 minutes)
+				)
+; Server name
+@		    IN      NS	    ns.castelao.int.
+; Addresses
+ns		    IN      A		172.28.0.53
+tania       IN      A       10.0.9.1
+jasmine     IN      A       10.0.9.2
+mario       IN      A       10.0.9.4
+iago        IN      A       10.0.9.5
+alvaro      IN      A       10.0.9.7
+httpd1      IN      A       172.28.0.80
+httpd2      IN      A       172.28.0.81
+mysql       IN      A       172.28.0.33
+postgres    IN      A       172.28.0.55 
+ubuntu      IN      A       172.28.0.209
+kali        IN      A       172.28.0.179

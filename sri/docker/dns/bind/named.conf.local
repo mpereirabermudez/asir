@@ -1,0 +1,8 @@
+
+zone "castelao.int" {
+	type master;
+	file "/var/lib/bind/db.castelao.int";
+	allow-query {
+		any;
+		};
+	};

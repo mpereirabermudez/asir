@@ -1,0 +1,125 @@
+version: '3.9'
+
+services:
+  httpd1: # Servidor Apache 1
+    container_name: httpd1
+    image: httpd:latest
+    working_dir: /usr/local/apache2/htdocs
+    volumes:
+      - ./httpd/htdocs/:/usr/local/apache2/htdocs:ro
+      - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+    ports: 
+      - '58080:80'
+    expose:
+      - '80'
+    networks: 
+      mynetwork: 
+        ipv4_address: 172.28.0.80
+    restart: on-failure
+
+  httpd2: # Servidor Apache 2
+    container_name: httpd2
+    image: httpd:latest
+    working_dir: /usr/local/apache2/htdocs
+    volumes_from:
+      - httpd1
+    ports: 
+      - '58081:80'
+    expose:
+      - '80'
+    networks: 
+      mynetwork: 
+        ipv4_address: 172.28.0.81
+    restart: on-failure
+
+  mysql: # Servidor MySQL
+    container_name: mysql
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'pwd123'
+    volumes:
+      - ../mysql/data:/var/lib/mysql:rw
+      - ./mysql/my.cnf:/etc/my.cnf:ro
+    networks:
+      mynetwork:
+        ipv4_address: 172.28.0.33
+    ports:
+      - '53306:3306'
+    expose:
+      - '3306'
+    restart: on-failure
+
+  postgres: # Servidor PostgreSQL
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: 'pwd123'
+    volumes:
+      - ../postgres/data/:/var/lib/postgresql/data:rw
+      - ./postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf:rw
+      - ./postgres/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf:rw
+      - ./postgres/pg_ident.conf:/var/lib/postgresql/data/pg_ident.conf:rw
+    networks:
+      mynetwork:
+        ipv4_address: 172.28.0.54
+    ports:
+      - '55432:5432'
+    expose:
+      - '5432'
+    restart: on-failure
+
+  dns: # Servidor DNS
+    container_name: dns
+    image: ubuntu/bind9:latest
+    working_dir: /etc/bind
+    volumes:
+      - ./dns/bind/named.conf:/etc/bind/named.conf:ro
+      - ./dns/bind/named.conf.options:/etc/bind/named.conf.options:ro
+      - ./dns/bind/named.conf.local:/etc/bind/named.conf.local:ro
+      - ./dns/bind/named.conf.default-zones:/etc/bind/named.conf.default-zones:ro
+      - ./dns/lib/:/var/lib/bind/:ro
+      - ../dns/log/:/var/log/bind/:rw
+    networks:
+      mynetwork:
+        ipv4_address: 172.28.0.53
+    ports: 
+      - '53:53/udp'
+    expose:
+      - '53/udp'
+    restart: on-failure
+  
+  ubuntu: # Cliente Ubuntu
+    container_name: ubuntu
+    image: ubuntu:latest
+    working_dir: /home
+    volumes:
+      - ../ubuntu/home:/home:rw
+    networks:
+      mynetwork:
+        ipv4_address: 172.28.0.209
+    stdin_open: true
+    tty: true
+    restart: on-failure
+    dns:
+      - 172.28.0.53
+
+  kali: # Cliente Kali
+    container_name: kali
+    image: kalilinux/kali-rolling:latest
+    working_dir: /home
+    volumes:
+      - ../kali/home:/home:rw
+    networks:
+      mynetwork:
+        ipv4_address: 172.28.0.179
+    stdin_open: true
+    tty: true
+    restart: on-failure
+
+networks: # Red Servicios
+  mynetwork:
+    ipam:
+      config:
+        - subnet: 172.28.0.0/24
+          gateway: 172.28.0.254
+
