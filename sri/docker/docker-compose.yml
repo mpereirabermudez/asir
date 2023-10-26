@@ -6,8 +6,8 @@ services:
     image: httpd:latest
     working_dir: /usr/local/apache2/htdocs
     volumes:
-      - ./httpd/htdocs/:/usr/local/apache2/htdocs:ro
-      - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+      - /home/asir2/asir/github/sri/docker/httpd/htdocs/:/usr/local/apache2/htdocs
+      - /home/asir2/asir/github/sri/docker/httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
     ports: 
       - '58080:80'
     expose:
@@ -20,7 +20,7 @@ services:
   httpd2: # Servidor Apache 2
     container_name: httpd2
     image: httpd:latest
-    working_dir: /usr/local/apache2/htdocs
+    working_dir: /usr/local/apache2/htdocs 
     volumes_from:
       - httpd1
     ports: 
@@ -38,8 +38,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 'pwd123'
     volumes:
-      - ../mysql/data:/var/lib/mysql:rw
-      - ./mysql/my.cnf:/etc/my.cnf:ro
+      - /home/asir2/asir/asir2/sri/mysql/data/:/var/lib/mysql
+      - /home/asir2/asir/asir2/sri/mysql/conf/my.cnf:/etc/my.cnf
     networks:
       mynetwork:
         ipv4_address: 172.28.0.33
@@ -55,10 +55,10 @@ services:
     environment:
       POSTGRES_PASSWORD: 'pwd123'
     volumes:
-      - ../postgres/data/:/var/lib/postgresql/data:rw
-      - ./postgres/postgresql.conf:/var/lib/postgresql/data/postgresql.conf:rw
-      - ./postgres/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf:rw
-      - ./postgres/pg_ident.conf:/var/lib/postgresql/data/pg_ident.conf:rw
+      - /home/asir2/asir/asir2/sri/postgres/data/:/var/lib/postgresql/data
+      - /home/asir2/asir/asir2/sri/postgres/conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - /home/asir2/asir/asir2/sri/postgres/conf/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - /home/asir2/asir/asir2/sri/postgres/conf/pg_ident.conf:/var/lib/postgresql/data/pg_ident.conf
     networks:
       mynetwork:
         ipv4_address: 172.28.0.54
@@ -73,12 +73,11 @@ services:
     image: ubuntu/bind9:latest
     working_dir: /etc/bind
     volumes:
-      - ./dns/bind/named.conf:/etc/bind/named.conf:ro
-      - ./dns/bind/named.conf.options:/etc/bind/named.conf.options:ro
-      - ./dns/bind/named.conf.local:/etc/bind/named.conf.local:ro
-      - ./dns/bind/named.conf.default-zones:/etc/bind/named.conf.default-zones:ro
-      - ./dns/lib/:/var/lib/bind/:ro
-      - ../dns/log/:/var/log/bind/:rw
+      - /home/asir2/asir/github/sri/docker/dns/bind/named.conf:/etc/bind/named.conf
+      - /home/asir2/asir/github/sri/docker/dns/bind/named.conf.options:/etc/bind/named.conf.options
+      - /home/asir2/asir/github/sri/docker/dns/bind/named.conf.local:/etc/bind/named.conf.local
+      - /home/asir2/asir/github/sri/docker/dns/bind/named.conf.default-zones:/etc/bind/named.conf.default-zones
+      - /home/asir2/asir/github/sri/docker/dns/lib/:/var/lib/bind/
     networks:
       mynetwork:
         ipv4_address: 172.28.0.53
@@ -93,7 +92,7 @@ services:
     image: ubuntu:latest
     working_dir: /home
     volumes:
-      - ../ubuntu/home:/home:rw
+      - /home/asir2/asir/asir2/sri/ubuntu/home:/home
     networks:
       mynetwork:
         ipv4_address: 172.28.0.209
@@ -102,19 +101,6 @@ services:
     restart: on-failure
     dns:
       - 172.28.0.53
-
-  kali: # Cliente Kali
-    container_name: kali
-    image: kalilinux/kali-rolling:latest
-    working_dir: /home
-    volumes:
-      - ../kali/home:/home:rw
-    networks:
-      mynetwork:
-        ipv4_address: 172.28.0.179
-    stdin_open: true
-    tty: true
-    restart: on-failure
 
 networks: # Red Servicios
   mynetwork:
