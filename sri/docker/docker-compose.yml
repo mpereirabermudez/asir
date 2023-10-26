@@ -36,7 +36,7 @@ services:
     container_name: mysql
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: 'pwd123'
+      MYSQL_ROOT_PASSWORD: 'root'
     volumes:
       - /home/asir2/asir/asir2/sri/mysql/data/:/var/lib/mysql
       - /home/asir2/asir/asir2/sri/mysql/conf/my.cnf:/etc/my.cnf
@@ -53,7 +53,7 @@ services:
     container_name: postgres
     image: postgres:latest
     environment:
-      POSTGRES_PASSWORD: 'pwd123'
+      POSTGRES_PASSWORD: 'postgres'
     volumes:
       - /home/asir2/asir/asir2/sri/postgres/data/:/var/lib/postgresql/data
       - /home/asir2/asir/asir2/sri/postgres/conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
