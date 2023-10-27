@@ -4,13 +4,13 @@ n=0
 while [[ $n -ne 9 ]]
 do
     read -n1 -rep "Posición: " n_pos # Número de posición
-    while [[ $n_pos -lt 1 || $n_pos -gt 9 ]]
+    while ! [[ $n_pos =~ ^[1-9]$ ]]
     do
         read -n1 -rep "Número inválido!. Posición: " n_pos
     done
+    
     read -n1 -rep "Símbolo: " simb # Símbolo
-    echo $simb
-    while [[ $simb != "X" && $simb != "O" ]]
+    while ! [[ $simb == "X" && $simb == "O" ]]
     do
         read -n1 -rep "Símbolo inválido!. Símbolo: " simb
     done
@@ -28,7 +28,7 @@ do
                 declare "$pos"=" "   
             fi
         fi
-        
+    clear    
     done
     
 echo "|---|---|---|"
