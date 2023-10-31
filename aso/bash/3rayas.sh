@@ -10,15 +10,17 @@ function board() {
     echo -e "\t|---|---|---|${reset}"
 }
 
+white=$'\001\033[1;97m\002' # Color blanco
+purple=$'\001\033[1;95m\002' # Color morado
+reset=$'\001\033[0m\002' # Reset
+italic=$'\001\033[3m\002' # Itálica
+normal=$'\001\033[m\002' # Normal
+
 for (( i=1; i<=9; i++ ))
 do
     pos="pos${i}"
-    declare "$pos"=" " 
+    declare "$pos"=$reset$italic$i$normal
     done
-
-white=$'\001\033[1;97m\002' # Color blanco
-purple=$'\001\033[1;95m\002' # Color morado
-reset=$'\001\033[0m\002' # Reset de colores
 
 board
 
@@ -46,5 +48,8 @@ do
     n=$(($n+1))
     clear
     board
+
+    for (( j=1+${i}; i<=7+${i}; i+=3 ))
+
 
 done 
