@@ -6,17 +6,26 @@ function ip_recon() {
     for (( i=1; i<=$1; i++ )) 
     do 
         ip_addr=${net_addr}.${i}
-        ping -c1 -W1 "$ip_addr" &> /dev/null
-        if [[ $? -eq 0 ]]
+        if ping -c1 -W1 "$ip_addr" &> /dev/null
         then
             mac_addr=$(arp -an | grep "($ip_addr)" | awk '{print $4}')
-            nmap -p22 -n -Pn "$ip_addr" | grep "22/tcp open" &> /dev/null
-            if [[ $? -eq 0 ]] 
+            if nmap -p22 -n -Pn "$ip_addr" | grep "22/tcp open" &> /dev/null 
             then
                 echo -e "\t${red}[!]${reset} ${green}Host${reset} ${yellow}$ip_addr${reset} ${green}at${reset} ${yellow}$mac_addr${reset} ${green}is up (ssh open)${reset}"
             else
                 echo -e "\t${red}[!]${reset} ${green}Host${reset} ${yellow}$ip_addr${reset} ${green}at${reset} ${yellow}$mac_addr${reset} ${green}is up${reset}"
             fi
+        fi
+    done
+}
+
+function cmd_check() {
+    for (( i=1; i<=$#; i++ ))
+    do
+        if ! command -v "${!i}" &> /dev/null
+        then
+            echo -e "${red}[!]${reset} ${yellow}${!i}${reset} ${green}is not installed${reset}"
+            exit 1
         fi
     done
 }
@@ -37,6 +46,9 @@ echo "██║██╔═══╝     ██╔══██║██║   █
 echo "██║██║         ██║  ██║╚██████╔╝███████║   ██║       ██████╔╝██║███████║╚██████╗╚██████╔╝ ╚████╔╝ ███████╗██║  ██║   ██║   ";
 echo "╚═╝╚═╝         ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝       ╚═════╝ ╚═╝╚══════╝ ╚═════╝ ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ";
 echo "                                                                                                                           ";
+
+cmd_check ip arp ping nmap
+
 echo -e "${italic}Starting Active Host Discovery...${normal}\n"
 
 if [[ -z $1 ]]
