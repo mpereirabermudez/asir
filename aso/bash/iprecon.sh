@@ -20,14 +20,19 @@ function ip_recon() {
 }
 
 function cmd_check() {
+    n_cmd=0
     for (( i=1; i<=$#; i++ ))
     do
-        if ! command -v "${!i}" &> /dev/null
+        if ! command -v "${i}" &> /dev/null
         then
             echo -e "${red}[!]${reset} ${yellow}${!i}${reset} ${green}is not installed${reset}"
-            exit 1
+            n_cmd=$((n_cmd+1))
         fi
     done
+    if [[ $n_cmd -ne 0 ]]
+    then
+        exit 1
+    fi
 }
 
 #Colores y estilos
