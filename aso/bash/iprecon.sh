@@ -9,18 +9,22 @@ function ip_recon() {
     echo -e "${red}[+]${reset} ${green}Network${reset} ${yellow}${net_addr}0$msk_addr${reset}\n"
     for (( i=1; i<=$1; i++ )) 
     do 
+        {
         ip_addr=${net_addr}${i} # Dirección IP de cada host de la red
-        if ping -c1 -W1 "$ip_addr" &> /dev/null
+        echo $ip_addr
+        if ping -c1 -W1 "$ip_addr" > /dev/null 2>&1
         then
             mac_addr=$(arp -an | awk -v ip="($ip_addr)" '$2 == ip {print $4}') # Dirección MAC de cada host de la red
-            if nmap -p22 -n -Pn "$ip_addr" | grep "22/tcp open" &> /dev/null # Comprobamos si el puerto 22 (ssh) está abierto
+            if nmap -p22 -n -Pn "$ip_addr" | grep "22/tcp open" > /dev/null 2>&1 # Comprobamos si el puerto 22 (ssh) está abierto
             then
                 echo -e "\t${red}[+]${reset} ${green}Host${reset} ${yellow}$ip_addr${reset} ${green}at${reset} ${yellow}$mac_addr${reset} ${green}is up (ssh open)${reset}"
             else
                 echo -e "\t${red}[+]${reset} ${green}Host${reset} ${yellow}$ip_addr${reset} ${green}at${reset} ${yellow}$mac_addr${reset} ${green}is up${reset}" 
             fi
         fi
+        } | cat &
     done
+    wait
 }
 
 # Función para comprobar si los comandos necesarios están instalados
@@ -28,7 +32,7 @@ function cmd_check() {
     n_cmd=0 # Contador de comandos no instalados
     for (( i=1; i<=$#; i++ )) 
     do
-        if ! command -v "${!i}" &> /dev/null # Comprobamos si el comando está instalado
+        if ! command -v "${!i}" > /dev/null 2>&1 # Comprobamos si el comando está instalado
         then
             echo -e "${red}[!]${reset} ${yellow}${!i}${reset} ${green}is not installed${reset}"
             n_cmd=$((n_cmd+1)) # Se incrementa el contador de comandos no instalados
