@@ -11,7 +11,6 @@ function ip_recon() {
     do 
         {
         ip_addr=${net_addr}${i} # Dirección IP de cada host de la red
-        echo $ip_addr
         if ping -c1 -W1 "$ip_addr" > /dev/null 2>&1
         then
             mac_addr=$(arp -an | awk -v ip="($ip_addr)" '$2 == ip {print $4}') # Dirección MAC de cada host de la red
