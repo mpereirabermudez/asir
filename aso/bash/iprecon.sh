@@ -3,27 +3,64 @@
 # Script para realizar el reconocimiento de hosts activos en la red
 # Autor: Mario Pereira aka DrDrunk3nst3in
 
+function host() { # Comrpobamos si el host y puerto 22 estan activos
+    if ping -c1 -W1 "$1" > /dev/null 2>&1 
+    then
+        mac_addr=$(arp -an | awk -v ip="($1)" '$2 == ip {print $4}') # Dirección MAC de cada host de la red
+        if nmap -p22 -n -Pn "$1" | grep "22/tcp open" > /dev/null 2>&1 # Comprobamos si el puerto 22 (ssh) está abierto
+        then
+            echo -e "\t${red}[+]${reset} ${green}Host${reset} ${yellow}$1${reset} ${green}at${reset} ${yellow}$mac_addr${reset} ${green}is up (ssh open)${reset}"
+        else
+            echo -e "\t${red}[+]${reset} ${green}Host${reset} ${yellow}$1${reset} ${green}at${reset} ${yellow}$mac_addr${reset} ${green}is up${reset}" 
+        fi
+    fi
+}
+
 # Función para realizar el reconocimiento de hosts activos en la red
 function ip_recon() {
-    read net_addr msk_addr < <(ip a | awk '/inet /{split($2, msk, "/"); split(msk[1], net, "."); if (net[1] != 127 && net[1] != 172) {print net[1]"."net[2]"."net[3]"." " " "/"msk[2]}}') # Dirección y máscara de red
-    echo -e "${red}[+]${reset} ${green}Network${reset} ${yellow}${net_addr}0$msk_addr${reset}\n"
-    for (( i=1; i<=$1; i++ )) 
-    do 
-        {
-        ip_addr=${net_addr}${i} # Dirección IP de cada host de la red
-        if ping -c1 -W1 "$ip_addr" > /dev/null 2>&1
-        then
-            mac_addr=$(arp -an | awk -v ip="($ip_addr)" '$2 == ip {print $4}') # Dirección MAC de cada host de la red
-            if nmap -p22 -n -Pn "$ip_addr" | grep "22/tcp open" > /dev/null 2>&1 # Comprobamos si el puerto 22 (ssh) está abierto
-            then
-                echo -e "\t${red}[+]${reset} ${green}Host${reset} ${yellow}$ip_addr${reset} ${green}at${reset} ${yellow}$mac_addr${reset} ${green}is up (ssh open)${reset}"
-            else
-                echo -e "\t${red}[+]${reset} ${green}Host${reset} ${yellow}$ip_addr${reset} ${green}at${reset} ${yellow}$mac_addr${reset} ${green}is up${reset}" 
-            fi
-        fi
-        } | cat &
-    done
-    wait
+    read net_addr msk_addr < <(ip a | awk '/inet /{split($2, msk, "/"); split(msk[1], net, "."); if (net[1] != 127 && net[1] != 172) {if (msk[2] == 24) {print net[1]"."net[2]"."net[3]".0" " " msk[2]} else if (msk[2] == 16) {print net[1]"."net[2]".0.0" " " msk[2]} else if (msk[2] == 8) {print net[1]".0.0.0" " " msk[2]}}}') # Dirección y máscara de red
+    echo -e "${red}[+]${reset} ${cyan}Network${reset} ${yellow}${net_addr}/$msk_addr${reset}\n"
+    i=j=k=0
+    if [[ $msk_addr -eq 24 ]]
+    then
+        for (( k=1; k<=$1; k++ ))
+        do
+            {
+            ip_addr=$(echo $net_addr | awk -v host24=$k '{split($1, ip, "."); {print ip[1]"."ip[2]"."ip[3]"."host24}}') # Dirección IP de cada host de la r
+            host $ip_addr
+            } &
+        done
+        wait
+    elif [[ $msk_addr -eq 16 ]]
+    then
+        for (( j=0; j<=$1; j++ ))
+        do
+            for (( k=1; k<=$2; k++ ))
+            do
+                {
+                ip_addr=$(echo $net_addr | awk -v host16=$j -v host24=$k '{split($1, ip, "."); {print ip[1]"."ip[2]"."host16"."host24}}') # Dirección IP de cada host de la red
+                host $ip_addr
+                } &
+            done
+            wait
+        done
+    elif [[ $msk_addr -eq 8 ]]
+    then
+        for (( i=0; i<=$1; i++ ))
+        do
+            for (( j=0; j<=$2; j++ ))
+            do
+                for (( k=1; k<=$3; k++ ))
+                do
+                    {
+                    ip_addr=$(echo $net_addr | awk -v host8=$i -v host16=$j -v host24=$k '{split($1, ip, "."); {print ip[1]"."host8"."host16"."host24}}') # Dirección IP de cada host de la red
+                    host $ip_addr
+                    } &
+                done
+                wait
+            done
+        done
+    fi 
 }
 
 # Función para comprobar si los comandos necesarios están instalados
@@ -52,31 +89,41 @@ reset=$'\001\033[0m\002' # Reset de colores
 italic=$'\001\033[3m\002' # Itálica
 normal=$'\001\033[m\002' # Normal
 
-if ! [[ $1 =~ ^([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-4])$ || -z $1 ]] # Comprobamos si el argumento es un número entre 1 y 254
+if  [[ $1 =~ ^([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-4])$ || -z $1 ]] && [[ $2 =~ ^([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-4])$ || -z $2 ]] && [[ $3 =~ ^([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-4])$ || -z $3 ]] # Comprobamos si el argumento es un número entre 1 y 254
+then
+    echo "                                                                                                                           ";
+    echo "██╗██████╗     ██╗  ██╗ ██████╗ ███████╗████████╗    ██████╗ ██╗███████╗ ██████╗ ██████╗ ██╗   ██╗███████╗██████╗ ██╗   ██╗";
+    echo "██║██╔══██╗    ██║  ██║██╔═══██╗██╔════╝╚══██╔══╝    ██╔══██╗██║██╔════╝██╔════╝██╔═══██╗██║   ██║██╔════╝██╔══██╗╚██╗ ██╔╝";
+    echo "██║██████╔╝    ███████║██║   ██║███████╗   ██║       ██║  ██║██║███████╗██║     ██║   ██║██║   ██║█████╗  ██████╔╝ ╚████╔╝ ";
+    echo "██║██╔═══╝     ██╔══██║██║   ██║╚════██║   ██║       ██║  ██║██║╚════██║██║     ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗  ╚██╔╝  ";
+    echo "██║██║         ██║  ██║╚██████╔╝███████║   ██║       ██████╔╝██║███████║╚██████╗╚██████╔╝ ╚████╔╝ ███████╗██║  ██║   ██║   ";
+    echo "╚═╝╚═╝         ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝       ╚═════╝ ╚═╝╚══════╝ ╚═════╝ ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ";
+    echo "                                                                                                                           ";
+
+    cmd_check ip arp ping nmap # Comprobamos si los comandos necesarios están instalados
+
+    echo -e "${italic}Starting Active Host Discovery...${normal}\n"
+
+    # Comprobamos si se ha pasado un argumento
+    if [[ $# -eq 0 ]]
+    then
+        ip_recon 254 254 254 # Por defecto se realizará el reconocimiento de todos los hosts de la red
+        echo -e "\n${red}[!]${reset} ${cyan}Scan finished!${reset}\n"
+    elif [[ $# -eq 1 ]]
+    then
+        ip_recon $1 # Se realizará el reconocimiento del número de hosts indicados
+        echo -e "\n${red}[!]${reset} ${cyan}Scan finished!${reset}\n"
+    elif [[ $# -eq 2 ]]
+    then
+        ip_recon $1 $2 # Se realizará el reconocimiento del número de hosts indicados
+        echo -e "\n${red}[!]${reset} ${cyan}Scan finished!${reset}\n"
+    elif [[ $# -eq 3 ]]
+    then
+        ip_recon $1 $2 $3 # Se realizará el reconocimiento del número de hosts indicados
+        echo -e "\n${red}[!]${reset} ${cyan}Scan finished!${reset}\n"
+    fi
+elif ! ([[ $1 =~ ^([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-4])$ || -z $1 ]] && [[ $2 =~ ^([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-4])$ || -z $2 ]] && [[ $3 =~ ^([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-4])$ || -z $3 ]])
 then
     echo -e "${red}[!]${reset} ${yellow}$1${reset} ${cyan}is not a valid number${reset}"
     exit 1
-fi
-
-echo "                                                                                                                           ";
-echo "██╗██████╗     ██╗  ██╗ ██████╗ ███████╗████████╗    ██████╗ ██╗███████╗ ██████╗ ██████╗ ██╗   ██╗███████╗██████╗ ██╗   ██╗";
-echo "██║██╔══██╗    ██║  ██║██╔═══██╗██╔════╝╚══██╔══╝    ██╔══██╗██║██╔════╝██╔════╝██╔═══██╗██║   ██║██╔════╝██╔══██╗╚██╗ ██╔╝";
-echo "██║██████╔╝    ███████║██║   ██║███████╗   ██║       ██║  ██║██║███████╗██║     ██║   ██║██║   ██║█████╗  ██████╔╝ ╚████╔╝ ";
-echo "██║██╔═══╝     ██╔══██║██║   ██║╚════██║   ██║       ██║  ██║██║╚════██║██║     ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗  ╚██╔╝  ";
-echo "██║██║         ██║  ██║╚██████╔╝███████║   ██║       ██████╔╝██║███████║╚██████╗╚██████╔╝ ╚████╔╝ ███████╗██║  ██║   ██║   ";
-echo "╚═╝╚═╝         ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝       ╚═════╝ ╚═╝╚══════╝ ╚═════╝ ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝   ╚═╝   ";
-echo "                                                                                                                           ";
-
-cmd_check ip arp ping nmap # Comprobamos si los comandos necesarios están instalados
-
-echo -e "${italic}Starting Active Host Discovery...${normal}\n"
-
-# Comprobamos si se ha pasado un argumento
-if [[ -z $1 ]]
-then
-    ip_recon 254 # Por defecto se realizará el reconocimiento de todos los hosts de la red
-    echo -e "\n${red}[!]${reset} ${cyan}Scan finished!${reset}\n"
-else
-    ip_recon $1 # Se realizará el reconocimiento del número de hosts indicados
-    echo -e "\n${red}[!]${reset} ${cyan}Scan finished!${reset}\n"
 fi
