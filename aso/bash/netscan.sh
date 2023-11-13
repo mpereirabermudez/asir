@@ -29,7 +29,7 @@ function ip_recon() {
                 else
                     OS="Unknown"
                 fi
-                nmap=$(nmap -p22 -T5 -n -Pn "$ip_addr")
+                nmap=$(nmap -p22 -n -Pn "$ip_addr")
                 mac_addr=$(echo "$nmap" | awk '/MAC/ {print $3}') # Dirección MAC del host
                 if echo $nmap | grep -q 'open' # Comprobamos si el puerto 22 (ssh) está abierto
                 then
@@ -74,7 +74,7 @@ then
             echo "██╔██╗ ██║█████╗     ██║   ███████╗██║     ███████║██╔██╗ ██║";
             echo "██║╚██╗██║██╔══╝     ██║   ╚════██║██║     ██╔══██║██║╚██╗██║";
             echo "██║ ╚████║███████╗   ██║   ███████║╚██████╗██║  ██║██║ ╚████║";
-            echo -e "╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝\n";
+            echo -e "╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝ by DrDrunk3nst3in\n";
 
             # Comprobamos si se ha pasado un argumento
             if [[ $# -eq 0 ]]
