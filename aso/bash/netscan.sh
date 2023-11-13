@@ -29,13 +29,12 @@ function ip_recon() {
                 else
                     OS="Unknown"
                 fi
-                nmap=$(nmap -p22 -n -Pn "$ip_addr")
-                mac_addr=$(echo "$nmap" | awk '/MAC/ {print $3}') # Dirección MAC del host
-                if echo $nmap | grep -q 'open' # Comprobamos si el puerto 22 (ssh) está abierto
+                mac_addr=$(arp -an | awk -v ip="($ip_addr)" '$2 == ip {print $4}') # Dirección MAC del host
+                if nmap -p22 --min-rate 5000 -n -Pn "$ip_addr" | grep -q 'open' # Comprobamos si el puerto 22 (ssh) está abierto
                 then
-                    echo -e "\t${red}[+] ${green}Host ${yellow}$ip_addr ${green}at ${yellow}$mac_addr ${green}running ${yellow}$OS ${green}is UP ${yellow}22/tcp open ssh${reset}"
+                    echo -e "\t${red}[+] ${green}Host ${yellow}$ip_addr ${green}at ${yellow}$mac_addr ${green}running ${yellow}$OS ${green}with ${yellow}22/tcp open ssh${green} is ${yellow}UP${reset}"
                 else
-                echo -e "\t${red}[+] ${green}Host ${yellow}$ip_addr ${green}at ${yellow}$mac_addr ${green}running ${yellow}$OS ${green}is UP${reset}" 
+                echo -e "\t${red}[+] ${green}Host ${yellow}$ip_addr ${green}at ${yellow}$mac_addr ${green}running ${yellow}$OS ${green}is ${yellow}UP${reset}" 
                 fi
             fi
         fi
@@ -53,46 +52,40 @@ reset=$'\001\033[0m\002' # Reset de colores
 italic=$'\001\033[3m\002' # Itálica
 normal=$'\001\033[m\002' # Normal
 
-if [[ $UID -eq 0 ]] # Comprobamos si el usuario es root
-then
-    num_commands=0 # Contador de comandos no instalados
-    commands=("ip" "arp" "ping" "nmap") # Comandos necesarios para el script
-    for command in "${commands[@]}"
-    do
-        if ! command -v "${command}" > /dev/null 2>&1 # Comprobamos si el comando está instalado
-        then
-            echo -e "${red}[!] ${yellow}$command ${green}is not installed${reset}"
-            num_commands=$((num_commands+1)) # Se incrementa el contador de comandos no instalados
-        fi
-    done
-    if [[ $n_cmd -eq 0 ]] 
+num_commands=0 # Contador de comandos no instalados
+commands=("ip" "arp" "ping" "nmap") # Comandos necesarios para el script
+for command in "${commands[@]}"
+do
+    if ! command -v "${command}" > /dev/null 2>&1 # Comprobamos si el comando está instalado
     then
-        if  [[ $1 =~ ^([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-4])$ || $# -eq 0 ]] # Comprobamos si el parámetro es un número entre 1 y 254
-        then
-            echo -e "\n███╗   ██╗███████╗████████╗███████╗ ██████╗ █████╗ ███╗   ██╗";
-            echo "████╗  ██║██╔════╝╚══██╔══╝██╔════╝██╔════╝██╔══██╗████╗  ██║";
-            echo "██╔██╗ ██║█████╗     ██║   ███████╗██║     ███████║██╔██╗ ██║";
-            echo "██║╚██╗██║██╔══╝     ██║   ╚════██║██║     ██╔══██║██║╚██╗██║";
-            echo "██║ ╚████║███████╗   ██║   ███████║╚██████╗██║  ██║██║ ╚████║";
-            echo -e "╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝ by DrDrunk3nst3in\n";
+        echo -e "${red}[!] ${yellow}$command ${green}is not installed${reset}"
+        num_commands=$((num_commands+1)) # Se incrementa el contador de comandos no instalados
+    fi
+done
+if [[ $n_cmd -eq 0 ]] 
+then
+    if  [[ $1 =~ ^([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-4])$ || $# -eq 0 ]] # Comprobamos si el parámetro es un número entre 1 y 254
+    then
+        echo -e "\n███╗   ██╗███████╗████████╗███████╗ ██████╗ █████╗ ███╗   ██╗";
+        echo "████╗  ██║██╔════╝╚══██╔══╝██╔════╝██╔════╝██╔══██╗████╗  ██║";
+        echo "██╔██╗ ██║█████╗     ██║   ███████╗██║     ███████║██╔██╗ ██║";
+        echo "██║╚██╗██║██╔══╝     ██║   ╚════██║██║     ██╔══██║██║╚██╗██║";
+        echo "██║ ╚████║███████╗   ██║   ███████║╚██████╗██║  ██║██║ ╚████║";
+        echo -e "╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝ by DrDrunk3nst3in\n";
 
-            # Comprobamos si se ha pasado un argumento
-            if [[ $# -eq 0 ]]
-            then
-                ip_recon 254 # Por defecto se realizará el reconocimiento de todos los hosts de la red
-                echo -e "\n${red}[!] ${cyan}Scan finished!${reset}\n"
-            else
-                ip_recon $1 # Se realizará el reconocimiento del número de hosts indicados
-                echo -e "\n${red}[!] ${cyan}Scan finished!${reset}\n"
-            fi
-        else # Si el parámetro no es un número entre 1 y 254 o vacío, se aborta el script
-            echo -e "${red}[!] ${yellow}$1 ${cyan}is not a valid number${reset}"
-            exit 1
+        # Comprobamos si se ha pasado un argumento
+        if [[ $# -eq 0 ]]
+        then
+            ip_recon 254 # Por defecto se realizará el reconocimiento de todos los hosts de la red
+            echo -e "\n${red}[!] ${cyan}Scan finished!${reset}\n"
+        else
+            ip_recon $1 # Se realizará el reconocimiento del número de hosts indicados
+            echo -e "\n${red}[!] ${cyan}Scan finished!${reset}\n"
         fi
-    else # Si el contador de comandos no instalados es distinto de 0, se aborta el script
+    else # Si el parámetro no es un número entre 1 y 254 o vacío, se aborta el script
+        echo -e "${red}[!] ${yellow}$1 ${cyan}is not a valid number${reset}"
         exit 1
     fi
-else # Si el usuario no es root, se aborta el script
-    echo -e "${red}[!] ${cyan}You must be ${yellow}root${cyan}!${reset}"
+else # Si el contador de comandos no instalados es distinto de 0, se aborta el script
     exit 1
 fi
