@@ -6,3 +6,11 @@ zone "castelao.int" {
 		any;
 		};
 	};
+
+zone "tiendadeelectronica.int" {
+	type master;
+	file "/var/lib/bind/db.tiendadeelectronica.int";
+	allow-query {
+		any;
+		};
+	};
