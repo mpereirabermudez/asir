@@ -318,12 +318,12 @@ named.conf.local
 //include "/etc/bind/zones.rfc1918";
 
 zone "castelao.int" {
-	type master;
-	file "/var/lib/bind/db.castelao.int";
-	allow-query {
-		any;
-		};
-	};
+  type master;
+  file "/var/lib/bind/db.castelao.int";
+  allow-query {
+    any;
+    };
+  };
 
 zone "tiendadeelectronica.int" {
   type master;
@@ -331,7 +331,7 @@ zone "tiendadeelectronica.int" {
   allow-query {
     any;
     };
-	};
+  };
 
 logging {
     channel query.log {
