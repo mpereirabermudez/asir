@@ -185,31 +185,31 @@ De esta forma, al eliminar un contenedor (buena práctica por cierto) al termina
 named.conf.local:
 ```yaml
 zone "castelao.int" {
-	type master;
-	file "/var/lib/bind/db.castelao.int";
-	allow-query {
-		any;
-		};
-	};
+  type master;
+  file "/var/lib/bind/db.castelao.int";
+  allow-query {
+    any;
+    };
+  };
 
 zone "tiendadeelectronica.int" {
-	type master;
-	file "/var/lib/bind/db.tiendadeelectronica.int";
-	allow-query {
-		any;
-		};
-	};
+  type master;
+  file "/var/lib/bind/db.tiendadeelectronica.int";
+  allow-query {
+    any;
+    };
+  };
 ```
 db.tiendaelectronica.int:
 ```yaml
 $TTL 38400	; 10 hours 40 minutes
-@		IN SOA	ns.tiendadeelectronica.int. mario.tiendadeelectronica.int. (
-				10000002   ; serial
-				10800      ; refresh (3 hours)
-				3600       ; retry (1 hour)
-				604800     ; expire (1 week)
-				38400      ; minimum (10 hours 40 minutes)
-				)
+@   IN SOA	ns.tiendadeelectronica.int. mario.tiendadeelectronica.int. (
+        10000002   ; serial
+        10800      ; refresh (3 hours)
+        3600       ; retry (1 hour)
+        604800     ; expire (1 week)
+        38400      ; minimum (10 hours 40 minutes)
+        )
 ; Server name
 @		    IN      NS	    ns.tiendadeelectronica.int.
 ; Addresses
@@ -326,11 +326,11 @@ zone "castelao.int" {
 	};
 
 zone "tiendadeelectronica.int" {
-	type master;
-	file "/var/lib/bind/db.tiendadeelectronica.int";
-	allow-query {
-		any;
-		};
+  type master;
+  file "/var/lib/bind/db.tiendadeelectronica.int";
+  allow-query {
+    any;
+    };
 	};
 
 logging {
@@ -344,13 +344,13 @@ logging {
 db.tiendadeelectronica.int:
 ```yaml
 $TTL 38400	; 10 hours 40 minutes
-@		IN SOA	ns.tiendadeelectronica.int. mario.tiendadeelectronica.int. (
-				10000002   ; serial
-				10800      ; refresh (3 hours)
-				3600       ; retry (1 hour)
-				604800     ; expire (1 week)
-				38400      ; minimum (10 hours 40 minutes)
-				)
+@   IN SOA	ns.tiendadeelectronica.int. mario.tiendadeelectronica.int. (
+        10000002   ; serial
+        10800      ; refresh (3 hours)
+        3600       ; retry (1 hour)
+        604800     ; expire (1 week)
+        38400      ; minimum (10 hours 40 minutes)
+        )
 ; Server name
 @		    IN      NS	    ns.tiendadeelectronica.int.
 ; Addresses
