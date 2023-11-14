@@ -304,6 +304,53 @@ www.tiendadeelectronica.int. 38400 IN   A       172.16.0.1
 ;; SERVER: 127.0.0.11#53(127.0.0.11) (UDP)
 ;; WHEN: Mon Nov 13 15:59:30 UTC 2023
 ;; MSG SIZE  rcvd: 100
+````
+```yml
+root@cccea14cd4c2:/home# dig owncloud.tiendadeelectronica.int
+
+; <<>> DiG 9.18.12-0ubuntu0.22.04.3-Ubuntu <<>> owncloud.tiendadeelectronica.int
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 57152
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 39766b9c7945e1a4010000006552662555a8386ebc97327b (good)
+;; QUESTION SECTION:
+;owncloud.tiendadeelectronica.int. IN   A
+
+;; ANSWER SECTION:
+owncloud.tiendadeelectronica.int. 38400 IN CNAME www.tiendadeelectronica.int.
+www.tiendadeelectronica.int. 38400 IN   A       172.16.0.1
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.11#53(127.0.0.11) (UDP)
+;; WHEN: Mon Nov 13 18:08:37 UTC 2023
+;; MSG SIZE  rcvd: 123
+```
+```yaml
+root@cccea14cd4c2:/home# dig texto.tiendadeelectronica.int TXT 
+
+; <<>> DiG 9.18.12-0ubuntu0.22.04.3-Ubuntu <<>> texto.tiendadeelectronica.int TXT
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 36871
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 4af6409e5dfa525701000000655268709b552aeb1dc389bd (good)
+;; QUESTION SECTION:
+;texto.tiendadeelectronica.int. IN      TXT
+
+;; ANSWER SECTION:
+texto.tiendadeelectronica.int. 38400 IN TXT     "1234ASDF"
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.11#53(127.0.0.11) (UDP)
+;; WHEN: Mon Nov 13 18:18:24 UTC 2023
+;; MSG SIZE  rcvd: 107
 ```
 ## 10) Realiza el apartado 9 en la máquina virtual con DNS.
 ### a), b) y c):
@@ -410,4 +457,53 @@ www.tiendadeelectronica.int. 38400 IN   A       172.16.0.1
 ;; SERVER: 10.0.9.165#53(10.0.9.165) (UDP)
 ;; WHEN: Mon Nov 13 17:15:47 CET 2023
 ;; MSG SIZE  rcvd: 100
+```
+```yaml
+❯ dig @10.0.9.165 owncloud.tiendadeelectronica.int
+
+; <<>> DiG 9.18.19-1~deb12u1-Debian <<>> @10.0.9.165 owncloud.tiendadeelectronica.int
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 51024
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: a918660901182e4e0100000065526955f2eaa76b5aae3cfb (good)
+;; QUESTION SECTION:
+;owncloud.tiendadeelectronica.int. IN   A
+
+;; ANSWER SECTION:
+owncloud.tiendadeelectronica.int. 38400 IN CNAME www.tiendadeelectronica.int.
+www.tiendadeelectronica.int. 38400 IN   A       172.16.0.1
+
+;; Query time: 8 msec
+;; SERVER: 10.0.9.165#53(10.0.9.165) (UDP)
+;; WHEN: Mon Nov 13 19:22:14 CET 2023
+;; MSG SIZE  rcvd: 123
+```
+```yaml
+❯ dig @10.0.9.165 texto.tiendadeelectronica.int TXT
+
+; <<>> DiG 9.18.19-1~deb12u1-Debian <<>> @10.0.9.165 texto.tiendadeelectronica.int TXT
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 61141
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: ad64064ac2d7229a010000006552698ef0e058b53c3ef1e8 (good)
+;; QUESTION SECTION:
+;texto.tiendadeelectronica.int. IN      TXT
+
+;; ANSWER SECTION:
+texto.tiendadeelectronica.int. 38400 IN TXT     "1234ASDF"
+
+;; Query time: 4 msec
+;; SERVER: 10.0.9.165#53(10.0.9.165) (UDP)
+;; WHEN: Mon Nov 13 19:23:10 CET 2023
+;; MSG SIZE  rcvd: 107
 ```
