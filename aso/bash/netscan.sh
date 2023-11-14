@@ -62,7 +62,7 @@ do
         num_commands=$((num_commands+1)) # Se incrementa el contador de comandos no instalados
     fi
 done
-if [[ $n_cmd -eq 0 ]] 
+if [[ $num_commands -eq 0 ]] 
 then
     if  [[ $1 =~ ^([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-4])$ || $# -eq 0 ]] # Comprobamos si el parámetro es un número entre 1 y 254
     then
