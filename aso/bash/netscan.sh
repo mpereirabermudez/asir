@@ -16,7 +16,7 @@ function ip_recon() {
         then
             if ping -c1 -W1 "$ip_addr" > /dev/null 2>&1 
             then
-                ttl=$(ping -c1 "$ip_addr" | awk '/ttl/ {print $1}') # TTL del paquete ICMP
+                ttl=$(ping -c1 "$ip_addr" | awk '/ttl/ {print $1}') # TTL del paquete ICMP  
                 if [[ $ttl -ge 1 && $ttl -le 64 ]]
                 then
                     OS="Linux/Unix"
