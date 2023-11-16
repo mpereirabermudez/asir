@@ -8,13 +8,6 @@ def window_size(width, height):
     y = (screen_height - height) / 2
     main_window.geometry(f"{width}x{height}+{int(x)}+{int(y)}")
     main_window.resizable(False, False)
-
-# Hide Main Menu Buttons
-def hide_main_menu_buttons():
-    button_users.pack_forget()
-    button_files.pack_forget()
-    button_processes.pack_forget()
-    button_backups.pack_forget() 
     
 # Users 
 def show_users_window():
