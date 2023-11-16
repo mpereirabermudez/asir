@@ -2,12 +2,12 @@ import tkinter as tk
 
 # Window Size
 def window_size(width, height):
-    main_window.geometry(f"{width}x{height}")
     screen_width = main_window.winfo_screenwidth()
     screen_height = main_window.winfo_screenheight()
     x = (screen_width - width) / 2
     y = (screen_height - height) / 2
-    main_window.geometry("+%d+%d" % (x, y))
+    main_window.geometry(f"{width}x{height}+{int(x)}+{int(y)}")
+    main_window.resizable(False, False)
 
 # Hide Main Menu Buttons
 def hide_main_menu_buttons():
@@ -22,7 +22,7 @@ def show_users_window():
     files_menu_frame.pack_forget()
     processes_menu_frame.pack_forget()
     backups_menu_frame.pack_forget()
-    hide_main_menu_buttons()
+    main_menu_frame.pack_forget()
     users_menu_frame.configure(bg="black")
     users_menu_frame.pack()
     
@@ -43,7 +43,7 @@ def show_files_window():
     users_menu_frame.pack_forget()
     processes_menu_frame.pack_forget()
     backups_menu_frame.pack_forget()
-    hide_main_menu_buttons()
+    main_menu_frame.pack_forget()
     files_menu_frame.configure(bg="black")
     files_menu_frame.pack()
     
@@ -68,7 +68,7 @@ def show_proccess_window():
     users_menu_frame.pack_forget()
     files_menu_frame.pack_forget()
     backups_menu_frame.pack_forget()
-    hide_main_menu_buttons()
+    main_menu_frame.pack_forget()
     processes_menu_frame.configure(bg="black")
     processes_menu_frame.pack()
     
@@ -85,7 +85,7 @@ def show_backup_window():
     users_menu_frame.pack_forget()
     files_menu_frame.pack_forget()
     processes_menu_frame.pack_forget()
-    hide_main_menu_buttons()
+    main_menu_frame.pack_forget()
     backups_menu_frame.configure(bg="black")
     backups_menu_frame.pack()
     
