@@ -13,7 +13,7 @@ def create_main_menu_frame():
     global main_menu_frame
     main_menu_frame = tk.Frame(main_window)
     main_menu_frame.configure(bg="midnight blue")
-    main_menu_frame.grid(row=1, column=0, sticky= 'news')
+    main_menu_frame.grid(row=1, column=0, sticky='news')
 
     button_users = tk.Button(main_menu_frame, text="Users", height=3, bd=0, width=20, font=("Arial", 20), command=create_users_menu_frame)
     button_users.pack(pady=20)
@@ -33,7 +33,7 @@ def create_main_menu_frame():
 def create_users_menu_frame():
     users_menu_frame = tk.Frame(main_window)
     users_menu_frame.configure(bg="midnight blue")
-    users_menu_frame.grid(row=1, column=0, sticky= 'news', padx=415)
+    users_menu_frame.grid(row=1, column=0, sticky= 'ns')
     
     button_create_user = tk.Button(users_menu_frame, text="Create user", height=3, bd=0, width=20, font=("Arial", 20))
     button_create_user.grid(row=0, column=0, padx=20, pady=20)
@@ -60,7 +60,7 @@ def create_users_menu_frame():
 def create_files_menu_frame():
     files_menu_frame = tk.Frame(main_window)
     files_menu_frame.configure(bg="midnight blue")
-    files_menu_frame.grid(row=1, column=0, sticky= 'news', padx=415)
+    files_menu_frame.grid(row=1, column=0, sticky= 'ns')
     
     button_copy_file = tk.Button(files_menu_frame, text="Copy file", height=3, bd=0, width=20, font=("Arial", 20), command=create_copy_file_frame)
     button_copy_file.grid(row=0, column=0, padx=20, pady=20)
@@ -93,7 +93,7 @@ def create_files_menu_frame():
 def create_copy_file_frame():
     copy_file_frame = tk.Frame(main_window)
     copy_file_frame.configure(bg="midnight blue")
-    copy_file_frame.grid(row=1, column=0, sticky= 'news', padx=415)
+    copy_file_frame.grid(row=1, column=0, sticky= 'ns')
     
     source_file = tk.StringVar()
     destination_file = tk.StringVar()
@@ -125,7 +125,7 @@ def create_copy_file_frame():
 def create_move_file_frame():
     move_file_frame = tk.Frame(main_window)
     move_file_frame.configure(bg="midnight blue")
-    move_file_frame.grid(row=1, column=0, sticky= 'news', padx=415)
+    move_file_frame.grid(row=1, column=0, sticky= 'ns')
     
     source_path = tk.StringVar()
     destination_path = tk.StringVar()
@@ -157,7 +157,7 @@ def create_move_file_frame():
 def create_show_file_content_frame():
     show_file_content_frame = tk.Frame(main_window)
     show_file_content_frame.configure(bg="midnight blue")
-    show_file_content_frame.grid(row=1, column=0, sticky= 'news', padx=415)
+    show_file_content_frame.grid(row=1, column=0, sticky= 'ns')
     
     source_file = tk.StringVar()
     
@@ -182,7 +182,7 @@ def create_show_file_content_frame():
 def create_delete_file_frame():
     delete_file_frame = tk.Frame(main_window)
     delete_file_frame.configure(bg="midnight blue")
-    delete_file_frame.grid(row=1, column=0, sticky= 'news', padx=415)
+    delete_file_frame.grid(row=1, column=0, sticky= 'ns')
     
     source_file = tk.StringVar()
     
@@ -207,7 +207,7 @@ def create_delete_file_frame():
 def create_change_file_permissions_frame():
     change_file_permissions_frame = tk.Frame(main_window)
     change_file_permissions_frame.configure(bg="midnight blue")
-    change_file_permissions_frame.grid(row=1, column=0, sticky= 'news', padx=415)
+    change_file_permissions_frame.grid(row=1, column=0, sticky= 'ns')
     
     source_file = tk.StringVar()
     
@@ -245,7 +245,7 @@ def create_change_file_permissions_frame():
 def create_change_file_owner_frame():
     change_file_owner_frame = tk.Frame(main_window)
     change_file_owner_frame.configure(bg="midnight blue")
-    change_file_owner_frame.grid(row=1, column=0, sticky= 'news', padx=415)
+    change_file_owner_frame.grid(row=1, column=0, sticky= 'ns')
     
     source_file = tk.StringVar()
     new_file_owner = tk.StringVar()
@@ -277,7 +277,7 @@ def create_change_file_owner_frame():
 def create_change_file_group_frame():
     change_file_group_frame = tk.Frame(main_window)
     change_file_group_frame.configure(bg="midnight blue")
-    change_file_group_frame.grid(row=1, column=0, sticky= 'news', padx=415)
+    change_file_group_frame.grid(row=1, column=0, sticky= 'ns')
     
     source_file = tk.StringVar()
     new_file_group = tk.StringVar()
@@ -309,7 +309,7 @@ def create_change_file_group_frame():
 def create_processes_menu_frame():
     processes_menu_frame = tk.Frame(main_window)
     processes_menu_frame.configure(bg="midnight blue")
-    processes_menu_frame.grid(row=1, column=0, sticky= 'news', padx=415)
+    processes_menu_frame.grid(row=1, column=0, sticky= 'ns')
     
     button_show_processes = tk.Button(processes_menu_frame, text="Show processes", height=3, bd=0, width=20, font=("Arial", 20))
     button_show_processes.grid(row=0, column=0, padx=20, pady=20)
@@ -330,7 +330,7 @@ def create_processes_menu_frame():
 def create_backups_menu_frame():
     backups_menu_frame = tk.Frame(main_window)
     backups_menu_frame.configure(bg="midnight blue")
-    backups_menu_frame.grid(row=1, column=0, sticky= 'news', padx=415)
+    backups_menu_frame.grid(row=1, column=0, sticky= 'ns')
     
     button_create_backup = tk.Button(backups_menu_frame, text="Create backup", height=3, bd=0, width=20, font=("Arial", 20))
     button_create_backup.grid(row=0, column=0, padx=20, pady=20)
@@ -355,10 +355,12 @@ main_window = tk.Tk()
 main_window.title("Sys Admin v1")
 main_window.configure(bg="midnight blue")
 main_window.state('zoomed')
+main_window.grid_rowconfigure(0, weight=1)
+main_window.grid_columnconfigure(0, weight=1)
 main_window.update_idletasks()
 
-main_menu_title = tk.Label(main_window, text=" S y s t e m   A d m i n", font=("Arial", 90, "bold"), fg="white", bg="midnight blue")
-main_menu_title.grid(row=0, column=0, sticky='news', pady=100, padx=250)
+main_menu_title = tk.Label(main_window, text=" S y s t e m   A d m i n", font=("Arial", 90, "bold"), fg="white", bg="midnight blue", anchor="center")
+main_menu_title.grid(row=0, column=0, sticky='news')
 
 create_main_menu_frame()
 
