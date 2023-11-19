@@ -1,7 +1,7 @@
 import tkinter as tk
     
 # Users 
-def show_users_window():
+def create_users_menu_frame():
     main_menu_frame.pack_forget()
     files_menu_frame.pack_forget()
     processes_menu_frame.pack_forget()
@@ -10,19 +10,23 @@ def show_users_window():
     users_menu_frame.configure(bg="midnight blue")
     users_menu_frame.pack()
     
-    button_create_user = tk.Button(users_menu_frame, text="Crear usuario", height=3, bd=0, width=20, font=("Arial", 20))
+    button_create_user = tk.Button(users_menu_frame, text="Create user", height=3, bd=0, width=20, font=("Arial", 20))
     button_create_user.grid(row=0, column=0, padx=20, pady=20)
-    button_create_group= tk.Button(users_menu_frame, text="Crear grupo", height=3, bd=0, width=20, font=("Arial", 20))
-    button_create_group.grid(row=1, column=0, padx=20, pady=20)
-    button_change_group= tk.Button(users_menu_frame, text="Cambiar de grupo", height=3, bd=0, width=20, font=("Arial", 20))
-    button_change_group.grid(row=2, column=0, padx=20, pady=20)
-    button_delete_user= tk.Button(users_menu_frame, text="Eliminar usuario", height=3, bd=0, width=20, font=("Arial", 20))
-    button_delete_user.grid(row=0, column=1, padx=20, pady=20)
-    button_delete_group= tk.Button(users_menu_frame, text="Eliminar grupo", height=3, bd=0, width=20, font=("Arial", 20))
-    button_delete_group.grid(row=1, column=1, padx=20, pady=20)
+    
+    button_delete_user= tk.Button(users_menu_frame, text="Delete user", height=3, bd=0, width=20, font=("Arial", 20))
+    button_delete_user.grid(row=1, column=0, padx=20, pady=20)
+    
+    button_create_user_group= tk.Button(users_menu_frame, text="Create user group", height=3, bd=0, width=20, font=("Arial", 20))
+    button_create_user_group.grid(row=2, column=0, padx=20, pady=20)
+    
+    button_change_user_group= tk.Button(users_menu_frame, text="Change user group", height=3, bd=0, width=20, font=("Arial", 20))
+    button_change_user_group.grid(row=0, column=1, padx=20, pady=20)
+    
+    button_delete_user_group= tk.Button(users_menu_frame, text="Delete user group", height=3, bd=0, width=20, font=("Arial", 20))
+    button_delete_user_group.grid(row=1, column=1, padx=20, pady=20)
 
 # Files
-def show_files_window():
+def create_files_menu_frame():
     users_menu_frame.pack_forget()
     processes_menu_frame.pack_forget()
     backups_menu_frame.pack_forget()
@@ -30,23 +34,29 @@ def show_files_window():
     files_menu_frame.configure(bg="midnight blue")
     files_menu_frame.pack()
     
-    button_copy_file = tk.Button(files_menu_frame, text="Copiar archivo", height=3, bd=0, width=20, font=("Arial", 20))
+    button_copy_file = tk.Button(files_menu_frame, text="Copy file", height=3, bd=0, width=20, font=("Arial", 20))
     button_copy_file.grid(row=0, column=0, padx=20, pady=20)
-    button_move_file= tk.Button(files_menu_frame, text="Mover archivo", height=3, bd=0, width=20, font=("Arial", 20))
+    
+    button_move_file= tk.Button(files_menu_frame, text="Move file", height=3, bd=0, width=20, font=("Arial", 20))
     button_move_file.grid(row=1, column=0, padx=20, pady=20)
-    button_show_content= tk.Button(files_menu_frame, text="Mostrar contenido", height=3, bd=0, width=20, font=("Arial", 20))
-    button_show_content.grid(row=2, column=0, padx=20, pady=20)
-    button_delete_file= tk.Button(files_menu_frame, text="Eliminar archivo", height=3, bd=0, width=20, font=("Arial", 20))
-    button_delete_file.grid(row=0, column=1, padx=20, pady=20)
-    button_change_permissions= tk.Button(files_menu_frame, text="Cambiar permisos", height=3, bd=0, width=20, font=("Arial", 20))
-    button_change_permissions.grid(row=1, column=1, padx=20, pady=20)
-    button_change_owner= tk.Button(files_menu_frame, text="Cambiar propietario", height=3, bd=0, width=20, font=("Arial", 20))
-    button_change_owner.grid(row=3, column=0, padx=20, pady=20)
-    button_change_group= tk.Button(files_menu_frame, text="Cambiar grupo", height=3, bd=0, width=20, font=("Arial", 20))
-    button_change_group.grid(row=2, column=1, padx=20, pady=20)
+    
+    button_show_file_content= tk.Button(files_menu_frame, text="Show file content", height=3, bd=0, width=20, font=("Arial", 20))
+    button_show_file_content.grid(row=2, column=0, padx=20, pady=20)
+    
+    button_delete_file= tk.Button(files_menu_frame, text="Delete file", height=3, bd=0, width=20, font=("Arial", 20))
+    button_delete_file.grid(row=3, column=0, padx=20, pady=20)
+    
+    button_change_file_permissions= tk.Button(files_menu_frame, text="Change file permissions", height=3, bd=0, width=20, font=("Arial", 20))
+    button_change_file_permissions.grid(row=0, column=1, padx=20, pady=20)
+    
+    button_change_file_owner= tk.Button(files_menu_frame, text="Change file owner", height=3, bd=0, width=20, font=("Arial", 20))
+    button_change_file_owner.grid(row=1, column=1, padx=20, pady=20)
+    
+    button_change_file_group= tk.Button(files_menu_frame, text="Change file group", height=3, bd=0, width=20, font=("Arial", 20))
+    button_change_file_group.grid(row=2, column=1, padx=20, pady=20)
 
 # Processes
-def show_proccess_window():
+def create_processes_menu_frame():
     users_menu_frame.pack_forget()
     files_menu_frame.pack_forget()
     backups_menu_frame.pack_forget()
@@ -54,15 +64,17 @@ def show_proccess_window():
     processes_menu_frame.configure(bg="midnight blue")
     processes_menu_frame.pack()
     
-    button_show_processes = tk.Button(processes_menu_frame, text="Mostrar procesos", height=3, bd=0, width=20, font=("Arial", 20))
+    button_show_processes = tk.Button(processes_menu_frame, text="Show processes", height=3, bd=0, width=20, font=("Arial", 20))
     button_show_processes.pack(pady=20)
-    button_change_priority = tk.Button(processes_menu_frame, text="Cambiar prioridad", height=3, bd=0, width=20, font=("Arial", 20))
-    button_change_priority.pack(pady=20)
-    button_kill_process = tk.Button(processes_menu_frame, text="Terminar proceso", height=3, bd=0, width=20, font=("Arial", 20))
+    
+    button_change_process_priority = tk.Button(processes_menu_frame, text="Change process priority", height=3, bd=0, width=20, font=("Arial", 20))
+    button_change_process_priority.pack(pady=20)
+    
+    button_kill_process = tk.Button(processes_menu_frame, text="Kill process", height=3, bd=0, width=20, font=("Arial", 20))
     button_kill_process.pack(pady=20)
 
 # Backups
-def show_backup_window():
+def create_backups_menu_frame():
     users_menu_frame.pack_forget()
     files_menu_frame.pack_forget()
     processes_menu_frame.pack_forget()
@@ -70,14 +82,17 @@ def show_backup_window():
     backups_menu_frame.configure(bg="midnight blue")
     backups_menu_frame.pack()
     
-    button_create_backup = tk.Button(backups_menu_frame, text="Crear backup", height=3, bd=0, width=20, font=("Arial", 20))
+    button_create_backup = tk.Button(backups_menu_frame, text="Create backup", height=3, bd=0, width=20, font=("Arial", 20))
     button_create_backup.pack(pady=20)
-    button_create_backup = tk.Button(backups_menu_frame, text="Crear crontab", height=3, bd=0, width=20, font=("Arial", 20))
-    button_create_backup.pack(pady=20)
-    button_create_backup = tk.Button(backups_menu_frame, text="Eliminar crontab", height=3, bd=0, width=20, font=("Arial", 20))
-    button_create_backup.pack(pady=20)
-    button_create_backup = tk.Button(backups_menu_frame, text="Extraer backup", height=3, bd=0, width=20, font=("Arial", 20))
-    button_create_backup.pack(pady=20)
+    
+    button_extract_backup = tk.Button(backups_menu_frame, text="Extract backup", height=3, bd=0, width=20, font=("Arial", 20))
+    button_extract_backup.pack(pady=20)
+    
+    button_create_backup_crontab = tk.Button(backups_menu_frame, text="Create backup crontab", height=3, bd=0, width=20, font=("Arial", 20))
+    button_create_backup_crontab.pack(pady=20)
+    
+    button_delete_backup_crontab = tk.Button(backups_menu_frame, text="Delete backup crontab", height=3, bd=0, width=20, font=("Arial", 20))
+    button_delete_backup_crontab.pack(pady=20)
     
 # Main Window    
 main_window = tk.Tk()
@@ -91,7 +106,6 @@ main_menu_title = tk.Label(main_window, text=" S y s t e m   A d m i n", font=("
 main_menu_title.configure(bg="midnight blue")
 main_menu_title.pack()
 
-# Main Frames
 users_menu_frame = tk.Frame(main_window)
 files_menu_frame = tk.Frame(main_window)
 processes_menu_frame = tk.Frame(main_window)
@@ -102,13 +116,13 @@ main_menu_frame = tk.Frame(main_window)
 main_menu_frame.configure(bg="midnight blue")
 main_menu_frame.pack()
 
-button_users = tk.Button(main_menu_frame, text="Usuarios", height=3, bd=0, width=20, font=("Arial", 20), command=show_users_window)
+button_users = tk.Button(main_menu_frame, text="Users", height=3, bd=0, width=20, font=("Arial", 20), command=create_users_menu_frame)
 button_users.pack(pady=20)
-button_files = tk.Button(main_menu_frame, text="Archivos", height=3, bd=0, width=20, font=("Arial", 20), command=show_files_window)
+button_files = tk.Button(main_menu_frame, text="Files", height=3, bd=0, width=20, font=("Arial", 20), command=create_files_menu_frame)
 button_files.pack(pady=20)
-button_processes = tk.Button(main_menu_frame, text="Procesos", height=3, bd=0, width=20, font=("Arial", 20), command=show_proccess_window)
+button_processes = tk.Button(main_menu_frame, text="Processes", height=3, bd=0, width=20, font=("Arial", 20), command=create_processes_menu_frame)
 button_processes.pack(pady=20)
-button_backups = tk.Button(main_menu_frame, text="Backups", height=3, bd=0, width=20, font=("Arial", 20), command=show_backup_window)
+button_backups = tk.Button(main_menu_frame, text="Backups", height=3, bd=0, width=20, font=("Arial", 20), command=create_backups_menu_frame)
 button_backups.pack(pady=20)
 
 main_window.mainloop()
