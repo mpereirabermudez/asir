@@ -1,7 +1,11 @@
 import tkinter as tk
+
+# Frames
+frames = {}
     
 # Users 
 def create_users_menu_frame():
+    users_menu_frame = tk.Frame(main_window)
     main_menu_frame.pack_forget()
     files_menu_frame.pack_forget()
     processes_menu_frame.pack_forget()
@@ -24,9 +28,12 @@ def create_users_menu_frame():
     
     button_delete_user_group= tk.Button(users_menu_frame, text="Delete user group", height=3, bd=0, width=20, font=("Arial", 20))
     button_delete_user_group.grid(row=1, column=1, padx=20, pady=20)
+    
+    frames["users_menu_frame"] = users_menu_frame
 
 # Files
 def create_files_menu_frame():
+    files_menu_frame = tk.Frame(main_window)
     users_menu_frame.pack_forget()
     processes_menu_frame.pack_forget()
     backups_menu_frame.pack_forget()
@@ -54,9 +61,12 @@ def create_files_menu_frame():
     
     button_change_file_group= tk.Button(files_menu_frame, text="Change file group", height=3, bd=0, width=20, font=("Arial", 20))
     button_change_file_group.grid(row=2, column=1, padx=20, pady=20)
+    
+    frames["files_menu_frame"] = files_menu_frame
 
 # Processes
 def create_processes_menu_frame():
+    processes_menu_frame = tk.Frame(main_window)
     users_menu_frame.pack_forget()
     files_menu_frame.pack_forget()
     backups_menu_frame.pack_forget()
@@ -72,9 +82,12 @@ def create_processes_menu_frame():
     
     button_kill_process = tk.Button(processes_menu_frame, text="Kill process", height=3, bd=0, width=20, font=("Arial", 20))
     button_kill_process.pack(pady=20)
+    
+    frames["processes_menu_frame"] = processes_menu_frame
 
 # Backups
 def create_backups_menu_frame():
+    backups_menu_frame = tk.Frame(main_window)
     users_menu_frame.pack_forget()
     files_menu_frame.pack_forget()
     processes_menu_frame.pack_forget()
@@ -94,27 +107,22 @@ def create_backups_menu_frame():
     button_delete_backup_crontab = tk.Button(backups_menu_frame, text="Delete backup crontab", height=3, bd=0, width=20, font=("Arial", 20))
     button_delete_backup_crontab.pack(pady=20)
     
+    frames["backups_menu_frame"] = backups_menu_frame
+    
 # Main Window    
 main_window = tk.Tk()
 main_window.title("Sys Admin v1")
 main_window.configure(bg="midnight blue")
-main_window.update_idletasks()
 main_window.state('zoomed')
-main_window.resizable(False, False)
 
-main_menu_title = tk.Label(main_window, text=" S y s t e m   A d m i n", font=("Arial", 90, "bold"), fg="white", width=400, height=3, anchor="center")
-main_menu_title.configure(bg="midnight blue")
-main_menu_title.pack()
-
-users_menu_frame = tk.Frame(main_window)
-files_menu_frame = tk.Frame(main_window)
-processes_menu_frame = tk.Frame(main_window)
-backups_menu_frame = tk.Frame(main_window)
+main_menu_title = tk.Label(main_window, text=" S y s t e m   A d m i n", font=("Arial", 90, "bold"), fg="white", bg="midnight blue")
+main_menu_title.grid(row=0, column=0, sticky='news', pady=100, padx=250)
 
 # Main Menu Buttons
+
 main_menu_frame = tk.Frame(main_window)
 main_menu_frame.configure(bg="midnight blue")
-main_menu_frame.pack()
+main_menu_frame.grid(row=1, column=0, sticky= 'news')
 
 button_users = tk.Button(main_menu_frame, text="Users", height=3, bd=0, width=20, font=("Arial", 20), command=create_users_menu_frame)
 button_users.pack(pady=20)
