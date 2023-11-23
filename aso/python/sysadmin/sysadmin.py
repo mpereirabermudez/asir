@@ -821,7 +821,7 @@ def create_extract_backup_frame():
         entry_source_path.insert(0, home)
         entry_destination_path.delete(0, tk.END)
         entry_destination_path.insert(0, home)
-    # Gets the G      
+    # Gets the user home directory     
     home = plib.Path.home() 
     
     extract_backup_frame = tk.Frame(main_window)
@@ -859,16 +859,24 @@ def create_create_backup_crontab():
     # Create backup crontab. Function to create a backup using crontab
     def create_backup_crontab(crontab_minute, crontab_hour, crontab_day_of_month, crontab_month, crontab_day_of_week, crontab_command):
         crontab_entry = f"{crontab_minute} {crontab_hour} {crontab_day_of_month} {crontab_month} {crontab_day_of_week} {crontab_command}\n"
-       # Creates a temporary file to store the crontab entry 
+        # Creates a temporary file to store the crontab entry 
         with tf.NamedTemporaryFile(mode='w+t', delete=False) as file:
-            # Gets the current crontab and write it to the temporary file
-            sp.run(['crontab', '-l'], stdout=file, check=True)
+            try:
+                # Tries to get the current crontab and write it to the temporary file
+                sp.run(['crontab', '-l'], stdout=file, check=True)
+            except sp.CalledProcessError as e:
+                # If the user does not have a crontab, ignore the error
+                if e.returncode != 1:
+                    raise
             # Writes the new crontab entry to the temporary file
             file.write(crontab_entry)
             # Saves the temporary file name
             temp_file_name = file.name
-        # Loads the temporary file as the new crontab
-        sp.run(['crontab', temp_file_name], check=True)
+        # Tries to load the temporary file as the new crontab
+        try:
+            sp.run(['crontab', temp_file_name], check=True)
+        except sp.CalledProcessError as e:
+            print(f"Error updating crontab: {e}")
         # Resets the entry fields
         entry_crontab_minute.delete(0, tk.END)
         entry_crontab_hour.delete(0, tk.END)
@@ -877,7 +885,7 @@ def create_create_backup_crontab():
         entry_crontab_day_of_week.delete(0, tk.END)
         entry_crontab_command.delete(0, tk.END)
         entry_crontab_command.insert(0, f"tar cvf {home} {home}")
-    # Gets the G    
+    # Gets the user home directory  
     home = plib.Path.home()
     
     main_window.grid_rowconfigure(1, weight=0)
@@ -916,7 +924,7 @@ def create_create_backup_crontab():
     entry_crontab_command.insert(0, f"tar cvf {home} {home}")
     entry_crontab_command.grid(row=5, column=1, sticky='news', pady=20, padx=20)
     
-    button_create_backup_crontab = tk.Button(create_backup_crontab_frame, text="Creat backup crontab", height=3, bd=0, width=20, font=("Arial", 20), command= lambda: create_backup_crontab(crontab_minute.get(), crontab_hour.get(), crontab_day_of_month.get(), crontab_month.get(), crontab_day_of_week.get(), crontab_command.get()))
+    button_create_backup_crontab = tk.Button(create_backup_crontab_frame, text="Create backup crontab", height=3, bd=0, width=20, font=("Arial", 20), command= lambda: create_backup_crontab(crontab_minute.get(), crontab_hour.get(), crontab_day_of_month.get(), crontab_month.get(), crontab_day_of_week.get(), crontab_command.get()))
     button_create_backup_crontab.grid(row=6, column=0, padx=20, pady=20)
     button_go_back = tk.Button(create_backup_crontab_frame, text="Go back", height=3, bd=0, width=20, font=("Arial", 20), command= lambda: show_frame("backups_menu_frame"))
     button_go_back.grid(row=6, column=1, padx=20, pady=20)
