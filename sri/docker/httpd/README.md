@@ -1,7 +1,7 @@
 # Apache en Docker
 ## Configuración
 ### Paso 1
-Instalamos las imágenes `docker`` de nuestros servicios necesarios:
+Instalamos las imágenes `docker` de nuestros servicios necesarios:
 
 *Apache*
 ```yaml
@@ -16,7 +16,7 @@ docker pull bind9:latest
 docker pull jlesage/firefox
 ```
 ### Paso 2
-Configuramos nuestro fichero `docker-compose.yaml`` con sus respectivos servicios docker:
+Configuramos nuestro fichero `docker-compose.yaml` con sus respectivos servicios docker:
 ```yaml
 version: '3.9'
 
@@ -218,7 +218,7 @@ levantamos nuestros servicios docker y en nuestro navegador local ingresamos la 
 localhost:5800
 ```
 ### Paso 2
-Una vez dentro del navegado Firefox en Docker, ingresamos la url de nuestra página web a visualizar:
+Una vez dentro del navegador `Firefox` en Docker, ingresamos la url de nuestra página web a visualizar:
 
 **www.fabulasmaravillosas.int**
 ```yaml
