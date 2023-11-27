@@ -160,31 +160,31 @@ DocumentRoot "/usr/local/apache2/htdocs"
 *named.conf.local*
 ```yaml
 zone "fabulasoscuras.int" {
-	type master;
-	file "/var/lib/bind/db.fabulasoscuras.int";
-	allow-query {
-		any;
-		};
-	};
+    type master;
+    file "/var/lib/bind/db.fabulasoscuras.int";
+    allow-query {
+        any;
+        };
+    };
 
 zone "fabulasmaravillosas.int" {
-	type master;
-	file "/var/lib/bind/db.fabulasmaravillosas.int";
-	allow-query {
-		any;
-		};
-	};
+    type master;
+    file "/var/lib/bind/db.fabulasmaravillosas.int";
+    allow-query {
+        any;
+        };
+    };
 ```
 *db.fabulasmaravillosas.int*
 ```yaml
 $TTL 38400	; 10 hours 40 minutes
-@		IN SOA	ns.fabulasmaravillosas.int. mario.fabulasmaravillosas.int. (
-				10000002   ; serial
-				10800      ; refresh (3 hours)
-				3600       ; retry (1 hour)
-				604800     ; expire (1 week)
-				38400      ; minimum (10 hours 40 minutes)
-				)
+@	IN SOA	ns.fabulasmaravillosas.int. mario.fabulasmaravillosas.int. (
+            10000002   ; serial
+            10800      ; refresh (3 hours)
+            3600       ; retry (1 hour)
+            604800     ; expire (1 week)
+            38400      ; minimum (10 hours 40 minutes)
+)
 ; Server name
 @		    IN      NS	    ns.fabulasmaravillosas.int.
 ; Addresses
@@ -194,13 +194,13 @@ www         IN      A       172.28.0.80
 *db.fabulasoscuras.int*
 ```yaml
 $TTL 38400	; 10 hours 40 minutes
-@		IN SOA	ns.fabulasoscuras.int. mario.fabulasoscuras.int. (
-				10000002   ; serial
-				10800      ; refresh (3 hours)
-				3600       ; retry (1 hour)
-				604800     ; expire (1 week)
-				38400      ; minimum (10 hours 40 minutes)
-				)
+@   IN SOA	ns.fabulasoscuras.int. mario.fabulasoscuras.int. (
+            10000002   ; serial
+            10800      ; refresh (3 hours)
+            3600       ; retry (1 hour)
+            604800     ; expire (1 week)
+            38400      ; minimum (10 hours 40 minutes)
+)
 ; Server name
 @		    IN      NS	    ns.fabulasoscuras.int.
 ; Addresses
