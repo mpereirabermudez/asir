@@ -1,18 +1,18 @@
 # Ubuntu DHCP Server
 ## Instalación
 Instalación del paquete `isc-dhcp-server`:
-```yaml
+```console
 sudo apt install isc-dhcp-server
 ```
 ## Configuración
 ### Paso 1
 Primeramente, procederemos a establecer las 2
-interfaces de red de nuestro `Ubuntu Server``, configurando una interfaz enp0s3 con dirección IP
-dinámica (mediante DHCP) y una interfaz enp0s8 con dirección IP estática 172.16.0.1 con
+interfaces de red de nuestro `Ubuntu Server`, configurando una interfaz `enp0s3` con dirección IP
+`dinámica` (mediante DHCP) y una interfaz `enp0s8` con dirección IP `estática` `172.16.0.1` con
 máscara de subred 255.255.0.0. Además, también especificaremos las direcciones IP de
-los servidores de resolución de nombres de dominio, en este caso los de Google, 8.8.8.8 y
-8.8.4.4::
-```yaml
+los servidores de resolución de nombres de dominio, en este caso los de Google, `8.8.8.8` y
+`8.8.4.4`:
+```console
 sudo nano /etc/netplan/00-install-config.yaml
 ```
 *00-install-config.yaml*
@@ -33,7 +33,7 @@ network:
 ```
 ### Paso 2
 Una vez establecida la configuración pertinente de nuestras interfaces de red de nuestro servidor DHCP, procederemos a aplicar dicha configuración mediante el comando:
-```yaml
+```console
 sudo netplan apply
 ```
 A continuación, comprobaremos que dicha configuración se ha aplicado correctamente
@@ -41,7 +41,7 @@ verificando los valores de nuestras interfaces de red con el comando:
 ```yaml
 ip a
 ```
-```yaml
+```swift
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
@@ -64,7 +64,7 @@ ip a
 ### Paso 3
 Ahora, procederemos a configurar nuestro servicio DHCP. Para ello, mediante
 el comando:
-```yaml
+```console
 sudo nano /etc/default/isc-dhcp-server
 ```
 accederemos al archivo `isc-dhcp-server` y definiremos la interfaz de red por la cual
@@ -93,7 +93,7 @@ INTERFACESv6=""
 ```
 ### Paso 4
 A continuación, mediante el comando:
-```yaml
+```console
 sudo nano /etc/dhcp/dhcpd.conf
 ```
 accederemos al archivo `dhcpd.conf` y estableceremos la configuración de la red a la cuál
@@ -235,7 +235,7 @@ y a continuación comprobaremos su inicialización mediante el comando:
 ```yaml
 sudo service isc-dhcp-server status
 ```
-```yaml
+```swift
 ● isc-dhcp-server.service - ISC DHCP IPv4 server
      Loaded: loaded (/lib/systemd/system/isc-dhcp-server.service; enabled; vendor preset: enabled)
      Active: active (running) since Mon 2023-12-04 14:54:00 UTC; 15min ago
@@ -262,7 +262,7 @@ En un cliente DHCP, visualizamos su cofiguración de red con el comando:
 ```yaml
 ip a
 ```
-```yaml
+```swift
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
@@ -280,7 +280,7 @@ ip a
 
 ```
 Ahora, en el cliente DHCP con una configuración estática, haremos lo mismo:
-```yaml
+```swift
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
@@ -299,23 +299,23 @@ Ahora, en el cliente DHCP con una configuración estática, haremos lo mismo:
 ```
 ### Wireshark
 Ahora, para verificar que nuestro servicio DHCP funciona correctamente, monitorizaremos el tráfico `UDP` de nuestra interfaz de red por DHCP en nuestro client DHCP. Para ello, mediante el comando:
-```yaml
+```console
 sudo dhclient -r
 ```
 liberaremos nuestra dirección IP por DHCP obtenida con anterioridad.
 
 A continuación, con el comando:
-```yaml
+```console
 sudo tshark -i enp0s3 -f "udp port 67 or udp port 68" -Y "bootp"
 ```
 procederemos a monitorizar el tráfico UDP por los puertos `67` y `68` (ambos DHCP) en la interfaz `enp0s3`.
 
 Por último, mediante el comando:
-```yaml
+```console
 sudo dhclient
 ```
-solicitaremos una nueva dirección IP a nuestro servidor DHCP, obteniendo así los paquetes deseados que verifican el correcto intercambio de paquetes DHCP entre nuestro client y servidor DHCP:
-```yaml
+solicitaremos una nueva dirección IP a nuestro servidor DHCP, obteniendo así los paquetes deseados que verifican el correcto intercambio de paquetes DHCP entre nuestro cliente y servidor DHCP:
+```swift
 Running as user "root" and group "root". This could be dangerous.
 Capturing on 'enp0s3'
  ** (tshark:4128) 11:49:15.510120 [Main MESSAGE] -- Capture started.
@@ -326,7 +326,7 @@ Capturing on 'enp0s3'
     4 0.006534574  172.16.0.1 → 172.16.0.3  DHCP 342 DHCP ACK      - Transaction ID 0x3e707761
 ```
 A continuación, haremos lo mismo con el cliente DHCP con configuración estática:
-```yaml
+```swift
 Running as user "root" and group "root". This could be dangerous.
 Capturing on 'enp0s3'
  ** (tshark:4402) 11:57:46.066735 [Main MESSAGE] -- Capture started.
